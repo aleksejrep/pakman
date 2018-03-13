@@ -1,0 +1,2 @@
+# pakman
+Plain account manager
