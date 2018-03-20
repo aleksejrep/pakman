@@ -1,0 +1,148 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file foreign_relations.cfk
+PROMPT  --------------------------------------------------------------------#
+
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_ACCOUNT_USER ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_ACCOUNT_USER ADD 
+CONSTRAINT EX$SEC_ACCOUNT_USER_CFK01
+ FOREIGN KEY (ACCOUNT_ID)
+ REFERENCES EX$SEC_ACCOUNT (ACCOUNT_ID)
+ ENABLE VALIDATE;
+
+ALTER TABLE EX$SEC_ACCOUNT_USER ADD 
+CONSTRAINT EX$SEC_ACCOUNT_USER_CFK02
+ FOREIGN KEY (USER_ID)
+ REFERENCES EX$SEC_USER (USER_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_ATTRIBUTE_VALUE ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_ATTRIBUTE_VALUE ADD 
+CONSTRAINT EX$SEC_ATTRIBUTE_VALUE_CFK01
+ FOREIGN KEY (ATTRIBUTE_ID)
+ REFERENCES EX$SEC_ATTRIBUTE_MAP(ATTRIBUTE_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CATALOG ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_CATALOG ADD 
+CONSTRAINT EX$SEC_CATALOG_CFK01
+ FOREIGN KEY (SFLAGS)
+ REFERENCES EX$SEC_CATALOG_SFMAP(SFLAGS)
+ ENABLE VALIDATE;
+
+ALTER TABLE EX$SEC_CATALOG ADD 
+CONSTRAINT EX$SEC_CATALOG_CFK02
+ FOREIGN KEY (TYPE_ID)
+ REFERENCES EX$SEC_CATALOG_TYPE(TYPE_ID)
+ ENABLE VALIDATE;
+ 
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CHANGEGL_DATA ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_CHANGEGL_DATA ADD 
+CONSTRAINT EX$SEC_CHANGEGL_DATA_CFK01
+ FOREIGN KEY (CHANGE_SEQUENCE#)
+ REFERENCES EX$SEC_CHANGEGL_HEAD(CHANGE_SEQUENCE#)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CHANGEGL_HEAD ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_CHANGEGL_HEAD ADD 
+CONSTRAINT EX$SEC_CHANGEGL_HEAD_CFK01
+ FOREIGN KEY (OPS_SEQUENCE#)
+ REFERENCES EX$SEC_USER_OPS_LOG(OPS_SEQUENCE)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_GROUP_MEMBER ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_GROUP_MEMBER ADD 
+CONSTRAINT EX$SEC_GROUP_MEMBER_CFK01
+ FOREIGN KEY (GROUP_ID)
+ REFERENCES EX$SEC_GROUP(GROUP_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_POLICY ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_POLICY ADD 
+CONSTRAINT EX$SEC_POLICY_CFK01
+ FOREIGN KEY (POLICY_ID)
+ REFERENCES EX$SEC_POLICY_NAME(POLICY_ID)
+ ENABLE VALIDATE;
+ 
+ALTER TABLE EX$SEC_POLICY ADD 
+CONSTRAINT EX$SEC_POLICY_CFK02
+ FOREIGN KEY (RESOURCE_ID)
+ REFERENCES EX$SEC_POLICY_RES_MAP(RESOURCE_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_USER ADD 
+CONSTRAINT EX$SEC_USER_CFK01
+ FOREIGN KEY (CATALOG_UUID, USER_NAME, USER_CODE)
+ REFERENCES EX$SEC_USER_REPL(CATALOG_UUID, USER_NAME, USER_CODE)
+ ENABLE VALIDATE;
+
+ALTER TABLE EX$SEC_USER ADD 
+CONSTRAINT EX$SEC_USER_CFK02
+ FOREIGN KEY (CATALOG_UUID)
+ REFERENCES EX$SEC_CATALOG(CATALOG_UUID)
+ ENABLE VALIDATE;
+
+ALTER TABLE EX$SEC_USER ADD 
+CONSTRAINT EX$SEC_USER_CFK03
+ FOREIGN KEY (SFLAGS)
+ REFERENCES EX$SEC_USER_SFMAP(SFLAGS)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_DESCR ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_USER_DESCR ADD 
+CONSTRAINT EX$SEC_USER_DESCR_CFK01
+ FOREIGN KEY (USER_ID)
+ REFERENCES EX$SEC_USER(USER_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_OPS_LOG ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_USER_OPS_LOG ADD 
+CONSTRAINT EX$SEC_USER_OPS_LOG_CFK02
+ FOREIGN KEY (USER_ID)
+ REFERENCES EX$SEC_USER(USER_ID)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_REPL ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_USER_REPL ADD 
+CONSTRAINT EX$SEC_USER_REPL_CFK01
+ FOREIGN KEY (CATALOG_UUID)
+ REFERENCES EX$SEC_CATALOG(CATALOG_UUID)
+ ENABLE VALIDATE;
+
+ALTER TABLE EX$SEC_USER_REPL ADD 
+CONSTRAINT EX$SEC_USER_REPL_CFK02
+ FOREIGN KEY (LAST_CHANGE)
+ REFERENCES EX$SEC_CHANGEGL_HEAD(CHANGE_SEQUENCE#)
+ ENABLE VALIDATE;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_REPL ->
+PROMPT  --------------------------------------------------------------------#
+ALTER TABLE EX$SEC_USER_REPL_SFMAP ADD 
+CONSTRAINT EX$SEC_USER_REPL_SFMAP_CFK01
+ FOREIGN KEY (CATALOG_TYPE_ID)
+ REFERENCES EX$SEC_CATALOG_TYPE(TYPE_ID)
+ ENABLE VALIDATE;

@@ -1,0 +1,134 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_user_repl.tbl
+PROMPT  -- EX$SEC_USER_REPL (TABLE)
+PROMPT  -- COMMENT: NONE
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_USER_REPL
+(
+  CATALOG_UUID          VARCHAR2(12 BYTE),
+  USER_NAME             VARCHAR2(64 BYTE),
+  USER_CODE             VARCHAR2(64 BYTE),
+  CREATED               DATE              CONSTRAINT EX$SEC_USER_REPL_CC01 NOT NULL, 
+  SFLAGS                BINARY_DOUBLE     CONSTRAINT EX$SEC_USER_REPL_CC02 NOT NULL,
+  FLAGS                 BINARY_DOUBLE     CONSTRAINT EX$SEC_USER_REPL_CC03 NOT NULL,
+  PHASHVALUE            VARCHAR2(64),
+  PEXPIRY               DATE,
+  PCHANGED              DATE,
+  LOCKDATE              DATE,
+  PROFILE1              NUMBER,
+  PROFILE2              NUMBER,
+  PROFILE3              NUMBER,
+  PROFILE4              NUMBER,
+  LAST_CHANGE           NUMBER,
+  LAST_TSTAMP           TIMESTAMP(6),
+  SPARE01               NUMBER,
+  SPARE02               NUMBER,
+  SPARE03               NUMBER,
+  SPARE04               NUMBER,
+  SPARE05               VARCHAR2(1024 BYTE),
+  SPARE06               VARCHAR2(1024 BYTE),
+  SPARE07               VARCHAR2(1024 BYTE),
+  SPARE08               VARCHAR2(1024 BYTE),
+  SPARE09               VARCHAR2(1024 BYTE),
+  SPARE10               DATE,
+  SPARE11               DATE,
+  SPARE12               DATE,
+  SPARE14               DATE,
+  SPARE15               DATE,
+  SPARE16               RAW(16),
+  SPARE17               RAW(32),
+  LAST_UPDATED_BY       NUMBER(10)             CONSTRAINT EX$SEC_USER_REPL_CC04 NOT NULL,
+  LAST_UPDATE_TSTAMP    TIMESTAMP(6)           DEFAULT CURRENT_TIMESTAMP CONSTRAINT EX$SEC_USER_REPL_CC05 NOT NULL,
+  CREATED_BY            NUMBER(10)             CONSTRAINT EX$SEC_USER_REPL_CC06 NOT NULL,
+  CREATION_TSTAMP       TIMESTAMP(6)           CONSTRAINT EX$SEC_USER_REPL_CC07 NOT NULL,
+  CONSTRAINT EX$SEC_USER_REPL_CPK PRIMARY KEY (CATALOG_UUID, USER_NAME, USER_CODE)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_USER_REPL_CPKX ON EX$SEC_USER_REPL(CATALOG_UUID, USER_NAME, USER_CODE) TABLESPACE &TBSIDXNAME) 
+  ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_REPL (NON CONSTRAINT INDEXES)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE INDEX EX$SEC_USER_REPL_IDX01 ON EX$SEC_USER_REPL(USER_NAME) 
+TABLESPACE &TBSIDXNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_REPL (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_USER_REPL IS 'Список пользователей реплицируемый из зарегестррованных целевых систем';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.CATALOG_UUID IS 'UUID каталога (целевой системы)';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.USER_NAME IS 'Имя пользователя в целевой системе';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.USER_CODE IS 'Код пользователя в целевой системе';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.SFLAGS IS 'Флаги состояния пользователя';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.CREATED IS 'Дата создания пользователя в учтеной системе';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.PEXPIRY IS 'Дата истечения пароля';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.PCHANGED IS 'Дата смены пароля';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.LOCKDATE IS 'Дата блокировки пользователя в учетной системе';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.FLAGS IS 'Основные флаги настроек';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.PHASHVALUE IS 'Хеш пароля пользователя.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.PROFILE1 IS 'Внешний ключ на ID профиля в контексте целевой системе. Будущее исп.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.PROFILE2 IS 'Внешний ключ на ID профиля в контексте целевой системе. Будущее исп.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.PROFILE3 IS 'Внешний ключ на ID профиля в контексте целевой системе. Будущее исп.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.PROFILE4 IS 'Внешний ключ на ID профиля в контексте целевой системе. Будущее исп.';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.LAST_CHANGE IS 'Уникальный номер изменения из целевой БД.';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.LAST_TSTAMP IS 'Время изменения из целевой БД.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE01 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE02 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE03 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE04 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE05 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE06 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE07 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE08 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE09 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE10 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE11 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE12 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE14 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE15 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE16 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER_REPL.SPARE17 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.LAST_UPDATED_BY IS 'Аудит: ID изменившего запись';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.LAST_UPDATE_TSTAMP IS 'Аудит: Время изменения записи';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.CREATED_BY IS 'Аудит: ID создавшего запись';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL.CREATION_TSTAMP IS 'Аудит: Время создания записи';

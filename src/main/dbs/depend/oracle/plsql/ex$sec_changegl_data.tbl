@@ -1,0 +1,42 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_changegl_data.tbl
+PROMPT  -- EX$SEC_CHANGEGL_DATA (TABLE)
+PROMPT  -- COMMENT: NONE
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_CHANGEGL_DATA
+(
+  CHANGE_SEQUENCE#  NUMBER,
+  FLAGS             BINARY_DOUBLE CONSTRAINT EX$SEC_CHANGEGL_DATA_CC01 NOT NULL,
+  SCHMAP            CHAR(8)       CONSTRAINT EX$SEC_CHANGEGL_DATA_CC02 NOT NULL,
+  SUBJECT           VARCHAR2(64)  CONSTRAINT EX$SEC_CHANGEGL_DATA_CC03 NOT NULL,
+  DATA_CHAR         VARCHAR2(128),
+  DATA_LOB          CLOB,          
+  CONSTRAINT EX$SEC_CHANGEGL_DATA_CPK PRIMARY KEY (CHANGE_SEQUENCE#)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_CHANGEGL_DATA_CPKX ON EX$SEC_CHANGEGL_DATA(CHANGE_SEQUENCE#))
+  ENABLE VALIDATE
+)
+LOB (DATA_LOB) STORE AS (
+  TABLESPACE   &TBSLOBNAME
+  DISABLE      STORAGE IN ROW
+  INDEX EX$SEC_CHANGEGL_DATA_LIDX01 (TABLESPACE &TBSIDXNAME)
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CHANGEGL_DATA (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_CHANGEGL_DATA IS 'Данные(тела) изменений из целевых БД с доп. регистрационной информацией';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.CHANGE_SEQUENCE# IS 'Внешний ключ номер последовательности измения';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.FLAGS IS 'Флаги свойств для теля изменения';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.SCHMAP IS 'Правило разбора тела изменения';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.SUBJECT IS 'Заголовок изменения';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.DATA_CHAR IS 'Тело изменения короткое';
+
+COMMENT ON COLUMN EX$SEC_CHANGEGL_DATA.DATA_LOB IS 'Тело изменения длинное';

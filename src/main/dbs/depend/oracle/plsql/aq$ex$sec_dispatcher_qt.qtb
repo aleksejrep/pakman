@@ -1,0 +1,22 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file aq$ex$sec_dispatcher_qt.qtb
+PROMPT  -- AQ$EX$SEC_DISPATCHER_QT (ORACLE ADVANCED QUEUE TABLE)
+PROMPT  --  Dependencies: 
+PROMPT  --   EX$SEC_DISPMSG_TYPE (ORACLE OBJECT TYPE)
+PROMPT  --------------------------------------------------------------------#
+
+BEGIN
+  SYS.DBMS_AQADM.CREATE_QUEUE_TABLE
+  (
+    QUEUE_TABLE           =>  'AQ$EX$SEC_DISPATCHER_QT'
+   ,QUEUE_PAYLOAD_TYPE    =>  'EX$SEC_DISPMSG_TYPE'
+   ,COMPATIBLE            =>  '10.0.0'
+   ,STORAGE_CLAUSE        =>  'TABLESPACE &TBSDATNAME'
+   ,SORT_LIST             =>  'ENQ_TIME'
+   ,MULTIPLE_CONSUMERS    =>  TRUE
+   ,MESSAGE_GROUPING      =>  0
+   ,COMMENT               =>  'Таблица - очередь сообщений для диспетчеров модуля EX$SECURITY.'
+   ,SECURE                =>  FALSE
+  );
+END;
+/

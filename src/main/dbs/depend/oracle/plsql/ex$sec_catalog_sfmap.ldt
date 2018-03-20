@@ -1,0 +1,80 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_catalog_sfmap.ldt
+PROMPT  -- EX$SEC_CATALOG_SFMAP (LOAD DICTIONARY DATA)
+PROMPT  --------------------------------------------------------------------#
+
+DELETE FROM EX$SEC_CATALOG_SFMAP;
+--    R
+-- 01 23 4567
+-- 10 00 0000 = 1
+-- State "REGISTER"
+-- Check CONN_STING      is success
+-- Check CATALOG_TYPE    is success
+-- Check CATALOG_VERSION is success
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(1,'REGISTER');
+--    R
+-- 01 23 4567
+-- 11 00 0000 = 1+2
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION  is success
+-- Check AGENT interface function (valid and usable):
+--                                   GET_VERSION
+--                                   SET_PARAMETER
+--                                   RESET_PARAMETER   
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(3,'DEPLOYED');
+--    R
+-- 01 23 4567
+-- 11 10 0000 = 1+2+4
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION    is success
+-- Check AGENT VALIDATION is success
+-- Check AGENT interface function (valid and usable):
+--                                   OPS_RUN
+--                                   SYNC_RUN
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(7,'READY(VALID)');
+--    R
+-- 01 23 4567
+-- 11 01 0000 = 1+2+8
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION    is success
+-- Check AGENT VALIDATION is fail
+-- Check AGENT interface function (valid and usable):
+--                                   OPS_RUN
+--                                   SYNC_RUN
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(11,'READY(INVALID)');
+-- 01 23 4567
+-- 11 10 1000 = 1+2+16
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION    is success
+-- Check AGENT VALIDATION is success
+-- Check AGENT interface function (valid and usable):
+--                                   OPS_RUN
+--                                   SYNC_RUN
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(19,'STARTED');
+--    R
+-- 01 23 4567
+-- 11 10 0100 = 1+2+32
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION    is success
+-- Check AGENT VALIDATION is success
+-- Check AGENT interface function (valid and usable):
+--                                   OPS_RUN
+--                                   SYNC_RUN
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(35,'PAUSED');
+--    R
+-- 01 23 4567
+-- 11 10 0010 = 1+2+64
+-- State "REGISTER"
+-- Check AGENT install on remote system
+-- Check AGENT_VERSION    is success
+-- Check AGENT VALIDATION is success
+-- Check AGENT interface function (valid and usable):
+--                                   OPS_RUN
+--                                   SYNC_RUN
+INSERT INTO EX$SEC_CATALOG_SFMAP(SFLAGS,STATE_NAME) VALUES(67,'STOPED');
+COMMIT;

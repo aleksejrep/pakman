@@ -1,0 +1,135 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_account.tbl
+PROMPT  -- EX$SEC_ACCOUNT (TABLE)
+PROMPT  --------------------------------------------------------------------#
+CREATE TABLE EX$SEC_ACCOUNT
+(
+  ACCOUNT_ID          NUMBER,
+  ACCOUNT_NAME        VARCHAR2(64 BYTE) CONSTRAINT EX$SEC_ACCOUNT_CC01 NOT NULL,
+  SFLAGS              BINARY_DOUBLE CONSTRAINT EX$SEC_ACCOUNT_CC02 NOT NULL,
+  FLAGS               BINARY_DOUBLE CONSTRAINT EX$SEC_ACCOUNT_CC03 NOT NULL,
+  REGISTERED          TIMESTAMP(6) CONSTRAINT EX$SEC_ACCOUNT_CC04 NOT NULL,
+  VALID_UNTIL         DATE,
+  LOCKDATE            DATE,
+  EMPLOEYE_CDC        NUMBER,
+  EMPLOEYE_CDN        VARCHAR2(32 BYTE),
+  EMPLOEYE_MFID       NUMBER,
+  EMPLOEYE_CDDT       DATE,
+  EMAIL1              VARCHAR2(128 BYTE),
+  EMAIL2              VARCHAR2(128 BYTE),
+  SPAREN1             NUMBER,
+  SPAREN2             NUMBER,
+  SPAREN3             NUMBER,
+  SPAREN4             NUMBER,
+  SPAREN5             NUMBER,
+  SPAREC1             VARCHAR2(1024 BYTE),
+  SPAREC2             VARCHAR2(1024 BYTE),
+  SPAREC3             VARCHAR2(1024 BYTE),
+  SPAREC4             VARCHAR2(1024 BYTE),
+  SPAREC5             VARCHAR2(1024 BYTE),
+  SPARED1             DATE,
+  SPARED2             DATE,
+  SPARED3             DATE,
+  SPARED4             DATE,
+  SPARED5             DATE,
+  SPARER1             RAW(16),
+  SPARER2             RAW(32),
+  LAST_UPDATED_BY     NUMBER(10) CONSTRAINT EX$SEC_ACCOUNT_CC05 NOT NULL,
+  LAST_UPDATE_TSTAMP  TIMESTAMP(6)              DEFAULT CURRENT_TIMESTAMP CONSTRAINT EX$SEC_ACCOUNT_CC06 NOT NULL,
+  CREATED_BY          NUMBER(10) CONSTRAINT EX$SEC_ACCOUNT_CC07 NOT NULL,
+  CREATION_TSTAMP     TIMESTAMP(6) CONSTRAINT EX$SEC_ACCOUNT_CC08 NOT NULL,
+  -- CONSTRAINT DEFINITION
+  -- EX$SEC_ACCOUNT_CPK
+  CONSTRAINT EX$SEC_ACCOUNT_CPK PRIMARY KEY (ACCOUNT_ID)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_ACCOUNT_CPKX ON EX$SEC_ACCOUNT(ACCOUNT_ID) TABLESPACE &TBSIDXNAME) ENABLE VALIDATE,
+  -- EX$SEC_ACCOUNT_CUQ01
+  CONSTRAINT EX$SEC_ACCOUNT_CUQ01 UNIQUE (ACCOUNT_NAME)
+  USING INDEX (CREATE INDEX EX$SEC_ACCOUNT_CUQ01X ON EX$SEC_ACCOUNT(ACCOUNT_NAME) TABLESPACE &TBSIDXNAME) ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_ACCOUNT (SEQUENCE FOR TABLE PK/OTHER)
+PROMPT  -- EX$SEC_ACCOUNT_ID_S (SEQUENCE)
+PROMPT  --------------------------------------------------------------------#
+CREATE SEQUENCE EX$SEC_ACCOUNT_ID_S
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOCACHE 
+NOCYCLE 
+NOORDER;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_ACCOUNT (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_ACCOUNT IS 'Справочник аккаунтов. Общая логическая учетная запись для конкретного сотрудника';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.ACCOUNT_ID IS 'ID аккаунта';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.ACCOUNT_NAME IS 'Униальное имя аккаунта';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SFLAGS IS 'Флаги состояния';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.FLAGS IS 'Доп. аттрибуты';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.REGISTERED IS 'Дата регистрации';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.VALID_UNTIL IS 'Дата действия';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.LOCKDATE IS 'Дата блокировки';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.EMPLOEYE_CDC IS 'Код  сотрудника символьный. Или используйте EMPLOEYE_CDN';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.EMPLOEYE_CDN IS 'Код  сотрудника числовой.Или используйте EMPLOEYE_CDC';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.EMPLOEYE_MFID IS 'ID функции возвращающей код сотруднику по имени аккаунта';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_ACCOUNT.EMPLOEYE_CDDT IS 'Дата привязки кода сотрудника';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.EMAIL1 IS 'E-mail основной';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.EMAIL2 IS 'E-mail дополнительный';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREN1 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREN2 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREN3 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREN4 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREN5 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREC1 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREC2 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREC3 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREC4 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPAREC5 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARED1 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARED2 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARED3 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARED4 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARED5 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARER1 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.SPARER2 IS 'Доп. поле для будущего использования';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.LAST_UPDATED_BY IS 'Аудит: ID изменившего запись';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.LAST_UPDATE_TSTAMP IS 'Аудит: Время изменения записи';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.CREATED_BY IS 'Аудит: ID создавшего запись';
+
+COMMENT ON COLUMN EX$SEC_ACCOUNT.CREATION_TSTAMP IS 'Аудит: Время создания записи';

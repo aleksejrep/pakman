@@ -1,0 +1,70 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_group.tbl
+PROMPT  -- EX$SEC_GROUP (TABLE)
+PROMPT  -- COMMENT: NONE
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_GROUP
+(
+  GROUP_ID            NUMBER,
+  GROUP_SNAME         VARCHAR2(64 BYTE) CONSTRAINT EX$SEC_GROUP_CC01 NOT NULL,
+  MLEVEL              BINARY_DOUBLE     CONSTRAINT EX$SEC_GROUP_CC02 NOT NULL,
+  SFLAGS              BINARY_DOUBLE     CONSTRAINT EX$SEC_GROUP_CC03 NOT NULL,
+  FLAGS               BINARY_DOUBLE     CONSTRAINT EX$SEC_GROUP_CC04 NOT NULL,
+  FUNC_ID             NUMBER,
+  LAST_UPDATED_BY     NUMBER(10)        CONSTRAINT EX$SEC_GROUP_CC05 NOT NULL,
+  LAST_UPDATE_TSTAMP  TIMESTAMP(6)      DEFAULT CURRENT_TIMESTAMP CONSTRAINT EX$SEC_GROUP_CC06 NOT NULL,
+  CREATED_BY          NUMBER(10)        CONSTRAINT EX$SEC_GROUP_CC07 NOT NULL,
+  CREATION_TSTAMP     TIMESTAMP(6)      CONSTRAINT EX$SEC_GROUP_CC08 NOT NULL,
+  CONSTRAINT EX$SEC_GROUP_CPK PRIMARY KEY (GROUP_ID)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_GROUP_CPKX ON EX$SEC_GROUP(GROUP_ID) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_GROUP_CUQ01 UNIQUE (GROUP_SNAME)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_GROUP_CUQ01X ON EX$SEC_GROUP(GROUP_SNAME) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_GROUP_CC09 CHECK
+  (
+   (BITAND(FLAGS,1) = 1 AND FUNC_ID IS NOT NULL)
+   OR  (BITAND(FLAGS,1) = 0 AND FUNC_ID IS  NULL)
+  )
+  ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_GROUP (SEQUENCE FOR TABLE PK/OTHER)
+PROMPT  -- EX$SEC_GROUP_ID_S (SEQUENCE)
+PROMPT  --------------------------------------------------------------------#
+CREATE SEQUENCE EX$SEC_GROUP_ID_S
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOCACHE 
+NOCYCLE 
+NOORDER;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_GROUP (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_GROUP IS 'Справочник групп для группировки сущностей EX$_SEC';
+
+COMMENT ON COLUMN EX$SEC_GROUP.GROUP_ID IS 'ID группы';
+
+COMMENT ON COLUMN EX$SEC_GROUP.GROUP_SNAME IS 'Уникальное имя группы';
+
+COMMENT ON COLUMN EX$SEC_GROUP.MLEVEL IS 'Флаги допустимых членов для данной группы: Другие группы:Пользователи:Аккоунты:Настройки:Сотрудники';
+
+COMMENT ON COLUMN EX$SEC_GROUP.SFLAGS IS 'Флаги состояни группы: 1x0 группы выключена';
+
+COMMENT ON COLUMN EX$SEC_GROUP.FLAGS IS 'Доп. аттрибуты: 1x0 - Виртуальная группа. 2x1 - Хранимая группа.';
+
+COMMENT ON COLUMN EX$SEC_GROUP.FUNC_ID IS 'ID функции для виртуальной группы';
+
+COMMENT ON COLUMN EX$SEC_GROUP.LAST_UPDATED_BY IS 'Аудит: ID изменившего запись';
+
+COMMENT ON COLUMN EX$SEC_GROUP.LAST_UPDATE_TSTAMP IS 'Аудит: Время изменения записи';
+
+COMMENT ON COLUMN EX$SEC_GROUP.CREATED_BY IS 'Аудит: ID создавшего запись';
+
+COMMENT ON COLUMN EX$SEC_GROUP.CREATION_TSTAMP IS 'Аудит: Время создания записи';

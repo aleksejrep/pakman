@@ -1,0 +1,42 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file aq$ex$sec_dispatcher_qq.qqu
+PROMPT  -- AQ$EX$SEC_DISPATCHER_QQ (ORACLE ADVANCED QUEUE)
+PROMPT  --  Dependencies: 
+PROMPT  --   AQ$EX$SEC_DISPATCHER_QT (ORACLE ADVANCED QUEUE TABLE)
+PROMPT  --------------------------------------------------------------------#
+
+BEGIN
+  SYS.DBMS_AQADM.CREATE_QUEUE
+  (
+    QUEUE_NAME          =>   'AQ$EX$SEC_DISPATCHER_QQ'
+   ,QUEUE_TABLE         =>   'AQ$EX$SEC_DISPATCHER_QT'
+   ,QUEUE_TYPE          =>   SYS.DBMS_AQADM.NORMAL_QUEUE
+   ,MAX_RETRIES         =>   5
+   ,RETRY_DELAY         =>   0
+   ,RETENTION_TIME      =>   -1
+   ,COMMENT             =>   'Очередь сообщений для диспетчеров модуля EX$SECURITY.'
+   );
+END;
+/
+
+DECLARE
+  aSubscriber sys.aq$_agent;
+BEGIN 
+  aSubscriber := sys.aq$_agent('DISP_COORDINATOR',
+                              '',
+                              0);
+  dbms_aqadm.add_subscriber
+     ( queue_name     => 'AQ$EX$SEC_DISPATCHER_QQ'
+      ,subscriber     => aSubscriber);
+END;
+/
+
+BEGIN
+  SYS.DBMS_AQADM.START_QUEUE
+  (
+    QUEUE_NAME => 'AQ$EX$SEC_DISPATCHER_QQ'
+   ,ENQUEUE => TRUE 
+   ,DEQUEUE => TRUE 
+   );
+END;
+/

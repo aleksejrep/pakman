@@ -1,0 +1,27 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_catalog_sfmap.tbl
+PROMPT  -- EX$SEC_CATALOG_SFMAP (TABLE IOT)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_CATALOG_SFMAP
+(
+  SFLAGS      BINARY_DOUBLE,
+  STATE_NAME  VARCHAR2(128 BYTE) CONSTRAINT EX$SEC_CATALOG_SFMAP_CC01 NOT NULL, 
+  CONSTRAINT EX$SEC_CATALOG_SFMAP_CPK PRIMARY KEY (SFLAGS) 
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_CATALOG_SFMAP_CUQ01 UNIQUE (STATE_NAME) 
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_CATALOG_SFMAP_CUQ01X ON EX$SEC_CATALOG_SFMAP(STATE_NAME) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+ORGANIZATION INDEX
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CATALOG_SFMAP (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_CATALOG_SFMAP IS 'Возможные комбинации флагов состояния для EX$_SEC_CATALOG';
+
+COMMENT ON COLUMN EX$SEC_CATALOG_SFMAP.SFLAGS IS 'Комбинация флагов состояни';
+
+COMMENT ON COLUMN EX$SEC_CATALOG_SFMAP.STATE_NAME IS 'Название состояния';

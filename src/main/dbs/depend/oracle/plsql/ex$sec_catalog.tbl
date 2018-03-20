@@ -1,0 +1,54 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_catalog.tbl
+PROMPT  -- EX$SEC_CATALOG (TABLE)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_CATALOG
+(
+  CATALOG_UUID        VARCHAR2(12 BYTE),
+  CATALOG_SNAME       VARCHAR2(64 BYTE)  CONSTRAINT EX$SEC_CATALOG_СС01 NOT NULL,
+  SFLAGS              BINARY_DOUBLE      CONSTRAINT EX$SEC_CATALOG_СС02 NOT NULL,
+  FLAGS               BINARY_DOUBLE      CONSTRAINT EX$SEC_CATALOG_СС03 NOT NULL,
+  TYPE_ID             NUMBER             CONSTRAINT EX$SEC_CATALOG_СС04 NOT NULL,
+  CONNECTION_DESCR    VARCHAR2(256 BYTE),
+  TARGET_ID           NUMBER,
+  LAST_UPDATE_TSTAMP  TIMESTAMP(6)       CONSTRAINT EX$SEC_CATALOG_СС05 NOT NULL,
+  LAST_UPDATED_BY     NUMBER             CONSTRAINT EX$SEC_CATALOG_СС06 NOT NULL,
+  CREATION_TSTAMP     TIMESTAMP(6)       CONSTRAINT EX$SEC_CATALOG_СС07 NOT NULL,
+  CREATED_BY          NUMBER             CONSTRAINT EX$SEC_CATALOG_СС08 NOT NULL,
+  CONSTRAINT EX$SEC_CATALOG_CPK PRIMARY KEY (CATALOG_UUID)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_CATALOG_CPKX ON EX$SEC_CATALOG(CATALOG_UUID) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_CATALOG_CUQ01 UNIQUE (CATALOG_SNAME)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_CATALOG_CUQ01X ON EX$SEC_CATALOG(CATALOG_SNAME) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CATALOG (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_CATALOG IS 'Справочник зарегестрированных каталогов хранящих учетные записи.';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.CATALOG_UUID IS 'Глобальный идентификатор каталога';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.CATALOG_SNAME IS 'Уникальное имя каталога';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.SFLAGS IS 'Флаги состояния для каталога:';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.FLAGS IS 'Доп. аттрибуты:  1x0 - каталог текущей системы, 2x1 - локальный каталог, 4x2 - удаленный каталог';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.TYPE_ID IS 'Внешний ключ: ID типа каталога. ';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.CONNECTION_DESCR IS 'Строка для подключения к целевой ИС';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.TARGET_ID IS 'Внешний ключ: ID конфигурационной единицы, к которой привязан каталог';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.LAST_UPDATE_TSTAMP IS 'Аудит: Дата изменения записи';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.LAST_UPDATED_BY IS 'Аудит: Кем изменена запись';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.CREATION_TSTAMP IS 'Аудит: Дата создания записи';
+
+COMMENT ON COLUMN EX$SEC_CATALOG.CREATED_BY IS 'Аудит: Кем создана запись';

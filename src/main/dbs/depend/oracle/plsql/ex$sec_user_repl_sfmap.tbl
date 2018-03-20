@@ -1,0 +1,30 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_user_repl_sfmap.tbl
+PROMPT  -- EX$SEC_USER_REPL_SFMAP (TABLE IOT)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_USER_REPL_SFMAP
+(
+  CATALOG_TYPE_ID  NUMBER,
+  SFLAGS           BINARY_DOUBLE,
+  STATUS_NAME      VARCHAR2(128 BYTE) CONSTRAINT EX$SEC_USER_REPL_SFMAP_CC01 NOT NULL, 
+  CONSTRAINT       EX$SEC_USER_REPL_SFMAP_CPK PRIMARY KEY (CATALOG_TYPE_ID,SFLAGS) 
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_USER_REPL_SFMAP_CUQ01 UNIQUE (CATALOG_TYPE_ID,STATUS_NAME) 
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_USER_REPL_SFMAP_CUQ01X ON EX$SEC_USER_REPL_SFMAP(CATALOG_TYPE_ID,STATUS_NAME) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+ORGANIZATION INDEX
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER_REPL_SFMAP (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_USER_REPL_SFMAP IS 'Возможные комбинации флагов состояния для EX$_SEC_USER_REPL. Заполняется драйвером целевой системы.';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL_SFMAP.CATALOG_TYPE_ID IS 'Внешний ключ тип целевой системы';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL_SFMAP.SFLAGS IS 'Комбинация флагов состояни';
+
+COMMENT ON COLUMN EX$SEC_USER_REPL_SFMAP.STATUS_NAME IS 'Название состояния';

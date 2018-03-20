@@ -1,0 +1,66 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_policy.tbl
+PROMPT  -- EX$SEC_POLICY (TABLE)
+PROMPT  --  Dependencies: 
+PROMPT  --   EX$SEC_POLICY_RESOURCE (Table)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_POLICY
+(
+  POLICY_ID           NUMBER,
+  RESOURCE_ID         NUMBER,
+  RES_VALUE           VARCHAR2(512 BYTE),
+  SFLAGS              BINARY_DOUBLE         CONSTRAINT EX$SEC_POLICY_СС01 NOT NULL,
+  FLAGS               BINARY_DOUBLE         CONSTRAINT EX$SEC_POLICY_СС02 NOT NULL, 
+  LAST_UPDATED_BY     NUMBER(10)            CONSTRAINT EX$SEC_POLICY_СС03 NOT NULL,
+  LAST_UPDATE_TSTAMP  TIMESTAMP(6)          DEFAULT CURRENT_TIMESTAMP CONSTRAINT EX$SEC_POLICY_СС04 NOT NULL,
+  CREATED_BY          NUMBER(10)            CONSTRAINT EX$SEC_POLICY_СС05 NOT NULL,
+  CREATION_TSTAMP     TIMESTAMP(6)          CONSTRAINT EX$SEC_POLICY_СС06 NOT NULL,
+  CONSTRAINT EX$SEC_POLICY_CPK PRIMARY KEY (POLICY_ID, RESOURCE_ID)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_POLICY_CPKX ON  EX$SEC_POLICY(POLICY_ID, RESOURCE_ID) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_POLICY (SEQUENCE FOR TABLE PK/OTHER)
+PROMPT  -- EX$SEC_POLICY_ID_S (SEQUENCE)
+PROMPT  --------------------------------------------------------------------#
+CREATE SEQUENCE EX$SEC_POLICY_ID_S
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOCACHE 
+NOCYCLE 
+NOORDER;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_POLICY (NON CONSTRAINT INDEXES)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE INDEX EX$SEC_POLICY_IDX01 ON EX$SEC_POLICY(RESOURCE_ID) 
+TABLESPACE &TBSIDXNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_POLICY (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_POLICY IS 'Список определения политик безопасноти. Тело политики - значения параметеров со значениями. Кросс Политика --> Параметр';
+
+COMMENT ON COLUMN EX$SEC_POLICY.POLICY_ID IS 'Внешний ключ: ID Политики';
+
+COMMENT ON COLUMN EX$SEC_POLICY.RESOURCE_ID IS 'Внешний ключ: ID ресурса';
+
+COMMENT ON COLUMN EX$SEC_POLICY.RES_VALUE IS 'Значение ресурса политики';
+
+COMMENT ON COLUMN EX$SEC_POLICY.SFLAGS IS 'Флаги состояний';
+
+COMMENT ON COLUMN EX$SEC_POLICY.FLAGS IS 'Доп. аттрибуры: 1 - Значение типа строка; 2 - Значение типа число; 4 - Значение типа дата';
+
+COMMENT ON COLUMN EX$SEC_POLICY.LAST_UPDATED_BY IS 'Аудит: ID изменившего запись';
+
+COMMENT ON COLUMN EX$SEC_POLICY.LAST_UPDATE_TSTAMP IS 'Аудит: Время изменения записи';
+
+COMMENT ON COLUMN EX$SEC_POLICY.CREATED_BY IS 'Аудит: ID создавшего запись';
+
+COMMENT ON COLUMN EX$SEC_POLICY.CREATION_TSTAMP IS 'Аудит: Время создания записи';

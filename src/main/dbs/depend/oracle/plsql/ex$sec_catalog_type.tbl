@@ -1,0 +1,27 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_catalog_type.tbl
+PROMPT  -- EX$SEC_CATALOG_TYPE (TABLE IOT)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_CATALOG_TYPE
+(
+  TYPE_ID    NUMBER,
+  TYPE_NAME  VARCHAR2(64 BYTE) CONSTRAINT EX$SEC_CATALOG_TYPE_CC01 NOT NULL,
+  CONSTRAINT EX$SEC_CATALOG_TYPE_CPK PRIMARY KEY (TYPE_ID) 
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_CATALOG_TYPE_CUQ01 UNIQUE (TYPE_NAME) 
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_CATALOG_TYPE_CUQ01X ON EX$SEC_CATALOG_TYPE(TYPE_NAME) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+ORGANIZATION INDEX
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_CATALOG_TYPE (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_CATALOG_TYPE IS 'Справочник типов целевых ИС';
+
+COMMENT ON COLUMN EX$SEC_CATALOG_TYPE.TYPE_ID IS 'ID типа';
+
+COMMENT ON COLUMN EX$SEC_CATALOG_TYPE.TYPE_NAME IS 'Короткое уникальное имя типа.';

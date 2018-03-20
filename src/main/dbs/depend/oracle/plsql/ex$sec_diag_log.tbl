@@ -1,0 +1,74 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_diag_log.tbl
+PROMPT  -- EX$SEC_DIAG_LOG (TABLE)
+PROMPT  -- COMMENT: Split into partitions for best select perfomance if needed
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_DIAG_LOG
+(
+  LOG_SEQUENCE   NUMBER              CONSTRAINT EX$SEC_DIAG_LOG_СС01 NOT NULL,
+  LOG_TIMESTAMP  TIMESTAMP(6)        CONSTRAINT EX$SEC_DIAG_LOG_СС02 NOT NULL,
+  PROGRAM_NAME   VARCHAR2(48 BYTE),
+  MODULE_NAME    VARCHAR2(64 BYTE),
+  FUNC_NAME      VARCHAR2(64 BYTE),
+  ACTION_NAME    VARCHAR2(128 BYTE),
+  STEP_NAME      VARCHAR2(64 BYTE),
+  MSG_HEADER     VARCHAR2(128 BYTE)   CONSTRAINT EX$SEC_DIAG_LOG_СС03 NOT NULL,
+  MSG_BODY       VARCHAR2(1024 BYTE),
+  LEVEL_FLAGS    BINARY_DOUBLE        CONSTRAINT EX$SEC_DIAG_LOG_СС04 NOT NULL,
+  FLAGS          BINARY_DOUBLE        CONSTRAINT EX$SEC_DIAG_LOG_СС05 NOT NULL,
+  SESSION_ID     VARCHAR2(64 BYTE)    CONSTRAINT EX$SEC_DIAG_LOG_СС06 NOT NULL
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_DIAG_LOG (SEQUENCE FOR TABLE PK/OTHER)
+PROMPT  -- EX$SEC_DIAG_LOG_S (SEQUENCE)
+PROMPT  --------------------------------------------------------------------#
+CREATE SEQUENCE EX$SEC_DIAG_LOG_S
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOCACHE 
+NOCYCLE 
+NOORDER;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_DIAG_LOG (NON CONSTRAINT INDEXES)
+PROMPT  --------------------------------------------------------------------#
+
+CREATE INDEX EX$SEC_DIAG_LOG_IDX01 ON EX$SEC_DIAG_LOG(PROGRAM_NAME) 
+TABLESPACE &TBSIDXNAME;
+
+CREATE INDEX EX$SEC_DIAG_LOG_IDX02 ON EX$SEC_DIAG_LOG(ACTION_NAME) 
+TABLESPACE &TBSIDXNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_DIAG_LOG (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_DIAG_LOG IS 'Отладочные сообщения для расширения EX$_SEC';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.LOG_SEQUENCE IS 'ID записи отладки';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.LOG_TIMESTAMP IS 'Время создания/вставки записи';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.PROGRAM_NAME IS 'Имя программы.';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.MODULE_NAME IS 'Имя модуля';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.FUNC_NAME IS 'Имя функции';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.ACTION_NAME IS 'Имя действия.';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.STEP_NAME IS 'Имя/номер шага внутри действия';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.MSG_HEADER IS 'Заголовок сообщения';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.MSG_BODY IS 'Тело сообщения';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.LEVEL_FLAGS IS 'Уровень отладки';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.FLAGS IS 'Доп. аттрибуты';
+
+COMMENT ON COLUMN EX$SEC_DIAG_LOG.SESSION_ID IS 'ID Сессии';

@@ -1,0 +1,137 @@
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- file ex$sec_user.tbl
+PROMPT  -- EX$SEC_USER (TABLE)
+PROMPT  -- COMMENT: NONE
+PROMPT  --------------------------------------------------------------------#
+
+CREATE TABLE EX$SEC_USER
+(
+  USER_ID               NUMBER,
+  CATALOG_UUID          VARCHAR2(12 BYTE) CONSTRAINT EX$SEC_USER_CC01 NOT NULL,
+  USER_NAME             VARCHAR2(64 BYTE) CONSTRAINT EX$SEC_USER_CC02 NOT NULL,
+  USER_CODE             VARCHAR2(64 BYTE),
+  SFLAGS                BINARY_DOUBLE     CONSTRAINT EX$SEC_USER_CC03 NOT NULL,
+  FLAGS                 BINARY_DOUBLE     CONSTRAINT EX$SEC_USER_CC04 NOT NULL,
+  RPFLAGS               BINARY_DOUBLE     CONSTRAINT EX$SEC_USER_CC05 NOT NULL,
+  LRFLAGS               BINARY_DOUBLE,
+  REGISTERED            TIMESTAMP(6)      CONSTRAINT EX$SEC_USER_CC06 NOT NULL,
+  REGISTER_BY           NUMBER            CONSTRAINT EX$SEC_USER_CC07 NOT NULL,
+  VALID_UNTIL           DATE,
+  DELETE_BY             NUMBER,
+  DELETED               TIMESTAMP(6),
+  POLICY_ID             NUMBER             CONSTRAINT EX$SEC_USER_CC08 NOT NULL,
+  SPARE01               NUMBER,
+  SPARE02               NUMBER,
+  SPARE03               NUMBER,
+  SPARE04               NUMBER,
+  SPARE05               VARCHAR2(1024 BYTE),
+  SPARE06               VARCHAR2(1024 BYTE),
+  SPARE07               VARCHAR2(1024 BYTE),
+  SPARE08               VARCHAR2(1024 BYTE),
+  SPARE09               VARCHAR2(1024 BYTE),
+  SPARE10               DATE,
+  SPARE11               DATE,
+  SPARE12               DATE,
+  SPARE14               DATE,
+  SPARE15               DATE,
+  SPARE16               RAW(16),
+  SPARE17               RAW(32),
+  LAST_UPDATED_BY       NUMBER(10)         CONSTRAINT EX$SEC_USER_CC09 NOT NULL,
+  LAST_UPDATE_TSTAMP    TIMESTAMP(6)       DEFAULT CURRENT_TIMESTAMP CONSTRAINT EX$SEC_USER_CC10 NOT NULL,
+  CREATED_BY            NUMBER(10)         CONSTRAINT EX$SEC_USER_CC11 NOT NULL,
+  CREATION_TSTAMP       TIMESTAMP(6)       CONSTRAINT EX$SEC_USER_CC12 NOT NULL,
+  CONSTRAINT EX$SEC_USER_CPK PRIMARY KEY (USER_ID)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_USER_CPKX ON EX$SEC_USER(USER_ID) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE,
+  CONSTRAINT EX$SEC_USER_CUQ01
+  UNIQUE (CATALOG_UUID, USER_NAME, USER_CODE)
+  USING INDEX (CREATE UNIQUE INDEX EX$SEC_USER_CUQ01X ON EX$SEC_USER(CATALOG_UUID, USER_NAME, USER_CODE) TABLESPACE &TBSIDXNAME)
+  ENABLE VALIDATE
+)
+TABLESPACE &TBSDATNAME;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER (SEQUENCE FOR TABLE PK/OTHER)
+PROMPT  -- EX$SEC_USER_ID_S (SEQUENCE)
+PROMPT  --------------------------------------------------------------------#
+CREATE SEQUENCE EX$SEC_USER_ID_S
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOCACHE 
+NOCYCLE 
+NOORDER;
+
+PROMPT  --------------------------------------------------------------------#
+PROMPT  -- EX$SEC_USER (TABLE/COLUMNS COMMENTS)
+PROMPT  --------------------------------------------------------------------#
+
+COMMENT ON TABLE EX$SEC_USER IS 'Список пользователей из зарегестррованных целевых систем';
+
+COMMENT ON COLUMN EX$SEC_USER.USER_ID IS 'Глобальный идентификатор пользователя в репозитории';
+
+COMMENT ON COLUMN EX$SEC_USER.CATALOG_UUID IS 'UUID каталога (целевой системы)';
+
+COMMENT ON COLUMN EX$SEC_USER.USER_NAME IS 'Имя пользователя в целевой системе';
+
+COMMENT ON COLUMN EX$SEC_USER.USER_CODE IS 'Код пользователя в целевой системе';
+
+COMMENT ON COLUMN EX$SEC_USER.SFLAGS IS 'Флаги состояния пользователя';
+
+COMMENT ON COLUMN EX$SEC_USER.FLAGS IS 'Доп. аттрибуты 1 x0 - Не занят 2 x1 - Пользователь создан в системe назначения  4 x2 - Пользователь удален  8 x3 - Пользователь заблокирован. Код причины поле LFLAGS 16x4 - Для пользователя установлена дата VALID_UNTIL 32x5 - Для пользователя установлена дата смены пароля 64x5 - Пользователь типа "Персональный". 128x6 - Пользователь зарегистрирован  256x7 - ';
+
+COMMENT ON COLUMN EX$SEC_USER.LRFLAGS IS 'Флаги причины блокировки lock reason flags: 1x0 - Запись была неактивна 2x0 - Заблокирована вручную 4x0 - Предельное кол-во входа с неверным паролем  8x0 - Сотрудник уволен. Актуален тольок для персонофицированных пользователей 16x0 -Пароль  просрочен требуется смена пароля';
+
+COMMENT ON COLUMN EX$SEC_USER.REGISTERED IS 'Дата регистрации пользователя в каталоге';
+
+COMMENT ON COLUMN EX$SEC_USER.REGISTER_BY IS 'Кем зарегестрирован';
+
+COMMENT ON COLUMN EX$SEC_USER.VALID_UNTIL IS 'Дата действия пользователя. После неё пользователь будет заблокирован';
+
+COMMENT ON COLUMN EX$SEC_USER.SPARE01 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.RPFLAGS IS 'Флаги настроек репликации и статуса репликации';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.DELETE_BY IS 'Код удалившего пользователя в целевой системе через задачу';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.DELETED IS 'Датап удаленния, полученная из триггера';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.POLICY_ID IS 'Внешний ключ на ID политики';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE02 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE03 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE04 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE05 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE06 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE07 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE08 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE09 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE10 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE11 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE12 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE14 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE15 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE16 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EXTDBA.EX$SEC_USER.SPARE17 IS 'Доп. поле для будущего использования.';
+
+COMMENT ON COLUMN EX$SEC_USER.LAST_UPDATED_BY IS 'Аудит: ID изменившего запись';
+
+COMMENT ON COLUMN EX$SEC_USER.LAST_UPDATE_TSTAMP IS 'Аудит: Время изменения записи';
+
+COMMENT ON COLUMN EX$SEC_USER.CREATED_BY IS 'Аудит: ID создавшего запись';
+
+COMMENT ON COLUMN EX$SEC_USER.CREATION_TSTAMP IS 'Аудит: Время создания записи';
